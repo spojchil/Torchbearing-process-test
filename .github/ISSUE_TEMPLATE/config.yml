@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 流程说明
+    url: https://github.com/spojchil/Torchbearing-process-test/blob/main/docs/PROCESS.md
+    about: 提交 Issue 前先阅读仓库流程。

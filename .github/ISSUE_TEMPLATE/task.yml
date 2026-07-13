@@ -1,0 +1,37 @@
+name: Engineering Task
+description: 提交一个范围清楚、可验证的工程任务
+title: "Task: "
+labels:
+  - task
+body:
+  - type: input
+    id: parent
+    attributes:
+      label: 关联 Proposal / Design
+      placeholder: "#1 / #2"
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: 目标
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: 改动范围
+    validations:
+      required: true
+  - type: textarea
+    id: non_goals
+    attributes:
+      label: 不做什么
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 验收标准
+    validations:
+      required: true

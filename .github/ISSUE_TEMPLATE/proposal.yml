@@ -1,0 +1,51 @@
+name: Product Proposal
+description: 提交一个需要讨论和决策的产品增量
+title: "Proposal: "
+labels:
+  - proposal
+body:
+  - type: textarea
+    id: motivation
+    attributes:
+      label: 动机 / 用户故事
+      description: 哪些真实场景触发了需求？共同问题是什么？
+    validations:
+      required: true
+  - type: textarea
+    id: users
+    attributes:
+      label: 目标用户
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: 现有做法及不足
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: 本期范围
+    validations:
+      required: true
+  - type: textarea
+    id: non_goals
+    attributes:
+      label: 明确不做
+    validations:
+      required: true
+  - type: textarea
+    id: decisions
+    attributes:
+      label: 关键决策与依据
+      description: 列出备选方案、选择和放弃理由。
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 验收标准
+      description: 尽量使用可验证的真实例子。
+    validations:
+      required: true

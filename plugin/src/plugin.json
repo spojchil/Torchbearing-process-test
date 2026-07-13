@@ -5,6 +5,14 @@
   "id": "spojchil-torchbearing-app",
   "backend": true,
   "executable": "gpx_torchbearing",
+  "iam": {
+    "permissions": [
+      {
+        "action": "datasources:query",
+        "scope": "datasources:uid:*"
+      }
+    ]
+  },
   "info": {
     "keywords": ["app", "prometheus", "observability", "ai"],
     "description": "Natural-language Prometheus metric analysis workbench",

@@ -42,6 +42,10 @@ func (a *App) handleAnalysis(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
+	if _, err := callerIdentityFromContext(req.Context()); err != nil {
+		http.Error(w, "authentication required", http.StatusUnauthorized)
+		return
+	}
 
 	var body analysisRequest
 	if err := json.NewDecoder(req.Body).Decode(&body); err != nil {

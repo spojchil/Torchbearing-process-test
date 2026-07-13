@@ -3,3 +3,6 @@ services:
     extends:
       file: .config/docker-compose-base.yaml
       service: grafana
+    environment:
+      GF_AUTH_MANAGED_SERVICE_ACCOUNTS_ENABLED: "true"
+      GF_FEATURE_TOGGLES_ENABLE: externalServiceAccounts

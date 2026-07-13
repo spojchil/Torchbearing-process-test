@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"net/http"
 	"testing"
+
+	"github.com/grafana/grafana-plugin-sdk-go/backend"
 )
 
 // mockCallResourceResponseSender implements backend.CallResourceResponseSender
@@ -41,9 +42,11 @@ func TestCallResource(t *testing.T) {
 	for _, tc := range []struct {
 		name string
 
-		method string
-		path   string
-		body   []byte
+		method        string
+		path          string
+		body          []byte
+		authenticated bool
+		headers       map[string][]string
 
 		expStatus int
 		expBody   []byte
@@ -55,18 +58,30 @@ func TestCallResource(t *testing.T) {
 			expStatus: http.StatusMethodNotAllowed,
 		},
 		{
-			name:      "post analysis 200",
-			method:    http.MethodPost,
-			path:      "analysis",
-			body:      []byte(`{"text":"checkout request rate","scope":{"datasourceUid":"prometheus","timeRange":{"from":"now-30m","to":"now"}}}`),
-			expStatus: http.StatusOK,
+			name:          "post analysis 200",
+			method:        http.MethodPost,
+			path:          "analysis",
+			body:          []byte(`{"text":"checkout request rate","scope":{"datasourceUid":"prometheus","timeRange":{"from":"now-30m","to":"now"}}}`),
+			authenticated: true,
+			expStatus:     http.StatusOK,
 		},
 		{
-			name:      "post analysis requires text",
-			method:    http.MethodPost,
-			path:      "analysis",
-			body:      []byte(`{"text":""}`),
-			expStatus: http.StatusBadRequest,
+			name:          "post analysis requires text",
+			method:        http.MethodPost,
+			path:          "analysis",
+			body:          []byte(`{"text":""}`),
+			authenticated: true,
+			expStatus:     http.StatusBadRequest,
+		},
+		{
+			name:   "post analysis rejects spoofed identity header",
+			method: http.MethodPost,
+			path:   "analysis",
+			body:   []byte(`{"text":"checkout request rate"}`),
+			headers: map[string][]string{
+				"X-Grafana-User": {"spoofed-admin"},
+			},
+			expStatus: http.StatusUnauthorized,
 		},
 		{
 			name:      "get non existing handler 404",
@@ -78,10 +93,24 @@ func TestCallResource(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			// Request by calling CallResource. This tests the httpadapter.
 			var r mockCallResourceResponseSender
+			pluginContext := backend.PluginContext{}
+			if tc.authenticated {
+				pluginContext = backend.PluginContext{
+					OrgID: 42,
+					User: &backend.User{
+						Login: "alice",
+						Name:  "Alice Example",
+						Email: "alice@example.com",
+						Role:  "Viewer",
+					},
+				}
+			}
 			err = app.CallResource(context.Background(), &backend.CallResourceRequest{
-				Method: tc.method,
-				Path:   tc.path,
-				Body:   tc.body,
+				PluginContext: pluginContext,
+				Method:        tc.method,
+				Path:          tc.path,
+				Headers:       tc.headers,
+				Body:          tc.body,
 			}, &r)
 			if err != nil {
 				t.Fatalf("CallResource error: %s", err)

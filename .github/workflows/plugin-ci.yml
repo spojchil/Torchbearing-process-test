@@ -1,0 +1,57 @@
+name: Plugin CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: plugin/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: plugin
+        run: npm ci
+
+      - name: Typecheck
+        working-directory: plugin
+        run: npm run typecheck
+
+      - name: Lint
+        working-directory: plugin
+        run: npm run lint
+
+      - name: Unit tests
+        working-directory: plugin
+        run: npm run test:ci
+
+      - name: Build frontend
+        working-directory: plugin
+        run: npm run build
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: plugin/go.mod
+          cache-dependency-path: plugin/go.sum
+
+      - name: Test backend
+        working-directory: plugin
+        run: go test ./pkg/...
+
+      - name: Build backend
+        working-directory: plugin
+        run: go build ./pkg/...

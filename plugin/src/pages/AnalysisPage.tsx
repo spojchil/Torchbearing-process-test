@@ -58,8 +58,12 @@ export default function AnalysisPage() {
           <section data-testid={testIds.analysis.result}>
             <h2>{result.chart.title}</h2>
             <p>图表类型：{result.chart.type}</p>
+            <p>
+              查询状态：{result.query.status}，序列数：{result.query.seriesCount}，耗时：{result.query.durationMs}ms
+            </p>
             <pre>{result.chart.promql}</pre>
-            <small>当前返回 Mock ChartSpec，真实查询由后续 Issue 实现。</small>
+            <p>{result.evidence.explanation}</p>
+            {result.mock && <small>当前返回架构 Stub，真实 Agent、MCP transport 与查询由后续 Issue 实现。</small>}
           </section>
         )}
       </main>

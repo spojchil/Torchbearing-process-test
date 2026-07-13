@@ -7,6 +7,12 @@ import (
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/instancemgmt"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/resource/httpadapter"
+	"github.com/spojchil/torchbearing/pkg/adapters/mcpinprocess"
+	"github.com/spojchil/torchbearing/pkg/adapters/stub"
+	"github.com/spojchil/torchbearing/pkg/adapters/validation"
+	"github.com/spojchil/torchbearing/pkg/agent"
+	application "github.com/spojchil/torchbearing/pkg/application/analysis"
+	mcpserver "github.com/spojchil/torchbearing/pkg/mcp/server"
 )
 
 // Make sure App implements required interfaces. This is important to do
@@ -19,14 +25,22 @@ var (
 	_ backend.CheckHealthHandler    = (*App)(nil)
 )
 
-// App is an example app plugin with a backend which can respond to data queries.
+// App is the Grafana transport and the MS1 composition root.
 type App struct {
 	backend.CallResourceHandler
+	analysisService *application.Service
 }
 
-// NewApp creates a new example *App instance.
+// NewApp wires the complete architecture path using deterministic adapters.
 func NewApp(_ context.Context, _ backend.AppInstanceSettings) (instancemgmt.Instance, error) {
-	var app App
+	catalog := stub.MetricCatalog{}
+	gateway := stub.PrometheusGateway{}
+	toolServer := mcpserver.New(catalog, gateway)
+	toolClient := mcpinprocess.New(toolServer)
+	runner := agent.NewRunner(toolClient)
+	analysisService := application.NewService(runner, validation.ChartSpecValidator{})
+
+	app := App{analysisService: analysisService}
 
 	// Use a httpadapter (provided by the SDK) for resource calls. This allows us
 	// to use a *http.ServeMux for resource calls, so we can map multiple routes

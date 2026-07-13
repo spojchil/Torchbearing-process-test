@@ -50,6 +50,7 @@ func TestCallResource(t *testing.T) {
 
 		expStatus int
 		expBody   []byte
+		expCode   string
 	}{
 		{
 			name:      "get analysis 405",
@@ -72,6 +73,16 @@ func TestCallResource(t *testing.T) {
 			body:          []byte(`{"text":""}`),
 			authenticated: true,
 			expStatus:     http.StatusBadRequest,
+			expCode:       "INVALID_REQUEST",
+		},
+		{
+			name:          "post analysis rejects datasource outside access scope",
+			method:        http.MethodPost,
+			path:          "analysis",
+			body:          []byte(`{"text":"checkout request rate","scope":{"datasourceUid":"other","timeRange":{"from":"now-30m","to":"now"}}}`),
+			authenticated: true,
+			expStatus:     http.StatusForbidden,
+			expCode:       "DATASOURCE_FORBIDDEN",
 		},
 		{
 			name:   "post analysis rejects spoofed identity header",
@@ -82,6 +93,7 @@ func TestCallResource(t *testing.T) {
 				"X-Grafana-User": {"spoofed-admin"},
 			},
 			expStatus: http.StatusUnauthorized,
+			expCode:   "UNAUTHENTICATED",
 		},
 		{
 			name:      "get non existing handler 404",
@@ -102,6 +114,9 @@ func TestCallResource(t *testing.T) {
 						Name:  "Alice Example",
 						Email: "alice@example.com",
 						Role:  "Viewer",
+					},
+					AppInstanceSettings: &backend.AppInstanceSettings{
+						JSONData: []byte(`{"prometheusDatasourceUids":["prometheus"]}`),
 					},
 				}
 			}
@@ -126,13 +141,25 @@ func TestCallResource(t *testing.T) {
 					t.Errorf("response body should be %s, got %s", tc.expBody, tb)
 				}
 			}
+			if tc.expCode != "" {
+				var body errorEnvelope
+				if err := json.Unmarshal(r.response.Body, &body); err != nil {
+					t.Fatalf("decode error response: %s", err)
+				}
+				if body.Error.Code != tc.expCode || body.RequestID == "" {
+					t.Fatalf("expected error code %s with request ID, got %#v", tc.expCode, body)
+				}
+			}
 			if tc.name == "post analysis 200" {
 				var body analysisResponse
 				if err := json.Unmarshal(r.response.Body, &body); err != nil {
 					t.Fatalf("decode response: %s", err)
 				}
-				if !body.Mock || body.Chart.PromQL == "" {
+				if !body.Mock || body.Chart.PromQL == "" || body.Query.Status != "success" {
 					t.Fatalf("expected mock chart response, got %#v", body)
+				}
+				if len(body.Evidence.Metrics) != 1 || body.Evidence.Metrics[0] != "http_requests_total" {
+					t.Fatalf("expected architecture path evidence, got %#v", body.Evidence)
 				}
 			}
 		})

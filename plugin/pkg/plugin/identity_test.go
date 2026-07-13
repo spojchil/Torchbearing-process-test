@@ -17,6 +17,9 @@ func TestCallerIdentityFromContextMinimizesIdentity(t *testing.T) {
 			Email: "alice@example.com",
 			Role:  "Viewer",
 		},
+		AppInstanceSettings: &backend.AppInstanceSettings{
+			JSONData: []byte(`{"prometheusDatasourceUids":[" prometheus-main ","prometheus-main"]}`),
+		},
 	})
 
 	got, err := callerIdentityFromContext(ctx)
@@ -25,6 +28,22 @@ func TestCallerIdentityFromContextMinimizesIdentity(t *testing.T) {
 	}
 	if got.OrgID != 7 || got.Login != "alice" || got.Role != "Viewer" {
 		t.Fatalf("unexpected minimized identity: %#v", got)
+	}
+	if len(got.Access.AllowedDatasourceUIDs) != 1 || got.Access.AllowedDatasourceUIDs[0] != "prometheus-main" {
+		t.Fatalf("unexpected access scope: %#v", got.Access)
+	}
+}
+
+func TestCallerIdentityFromContextRejectsInvalidSettings(t *testing.T) {
+	ctx := backend.WithPluginContext(context.Background(), backend.PluginContext{
+		OrgID:               7,
+		User:                &backend.User{Login: "alice"},
+		AppInstanceSettings: &backend.AppInstanceSettings{JSONData: []byte(`{"broken"`)},
+	})
+
+	_, err := callerIdentityFromContext(ctx)
+	if !errors.Is(err, errInvalidAppSettings) {
+		t.Fatalf("expected errInvalidAppSettings, got %v", err)
 	}
 }
 

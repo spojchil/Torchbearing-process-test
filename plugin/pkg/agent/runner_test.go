@@ -7,25 +7,25 @@ import (
 	"time"
 
 	domain "github.com/spojchil/torchbearing/pkg/domain/analysis"
-	mcpclient "github.com/spojchil/torchbearing/pkg/mcp/client"
+	"github.com/spojchil/torchbearing/pkg/mcp/contract"
 )
 
 type recordingTools struct {
 	calls []string
 }
 
-func (t *recordingTools) SearchMetrics(context.Context, domain.ActorContext, mcpclient.SearchMetricsInput) ([]domain.MetricCandidate, error) {
-	t.calls = append(t.calls, mcpclient.ToolMetricsSearch)
+func (t *recordingTools) SearchMetrics(context.Context, domain.ActorContext, contract.SearchMetricsInput) ([]domain.MetricCandidate, error) {
+	t.calls = append(t.calls, contract.ToolMetricsSearch)
 	return []domain.MetricCandidate{{Name: "http_requests_total"}}, nil
 }
 
-func (t *recordingTools) DescribeMetric(context.Context, domain.ActorContext, mcpclient.DescribeMetricInput) (domain.MetricDescriptor, error) {
-	t.calls = append(t.calls, mcpclient.ToolMetricsDescribe)
+func (t *recordingTools) DescribeMetric(context.Context, domain.ActorContext, contract.DescribeMetricInput) (domain.MetricDescriptor, error) {
+	t.calls = append(t.calls, contract.ToolMetricsDescribe)
 	return domain.MetricDescriptor{Name: "http_requests_total", Type: "counter"}, nil
 }
 
 func (t *recordingTools) QueryRange(context.Context, domain.ActorContext, domain.QueryRangeRequest) (domain.QueryResult, error) {
-	t.calls = append(t.calls, mcpclient.ToolPrometheusQueryRange)
+	t.calls = append(t.calls, contract.ToolPrometheusQueryRange)
 	return domain.QueryResult{Status: domain.QueryStatusSuccess, Duration: 10 * time.Millisecond, SeriesCount: 1}, nil
 }
 
@@ -45,7 +45,7 @@ func TestRunnerUsesAllThreeMCPToolsInOrder(t *testing.T) {
 	if err != nil {
 		t.Fatalf("analyze: %v", err)
 	}
-	wantCalls := []string{mcpclient.ToolMetricsSearch, mcpclient.ToolMetricsDescribe, mcpclient.ToolPrometheusQueryRange}
+	wantCalls := []string{contract.ToolMetricsSearch, contract.ToolMetricsDescribe, contract.ToolPrometheusQueryRange}
 	if !reflect.DeepEqual(tools.calls, wantCalls) {
 		t.Fatalf("tool calls = %v, want %v", tools.calls, wantCalls)
 	}

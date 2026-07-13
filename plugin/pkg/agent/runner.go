@@ -11,6 +11,7 @@ import (
 	application "github.com/spojchil/torchbearing/pkg/application/analysis"
 	domain "github.com/spojchil/torchbearing/pkg/domain/analysis"
 	mcpclient "github.com/spojchil/torchbearing/pkg/mcp/client"
+	"github.com/spojchil/torchbearing/pkg/mcp/contract"
 )
 
 type Runner struct {
@@ -22,7 +23,7 @@ func NewRunner(tools mcpclient.Client) *Runner {
 }
 
 func (r *Runner) Analyze(ctx context.Context, actor domain.ActorContext, request domain.AnalysisRequest) (domain.AnalysisResult, error) {
-	candidates, err := r.tools.SearchMetrics(ctx, actor, mcpclient.SearchMetricsInput{
+	candidates, err := r.tools.SearchMetrics(ctx, actor, contract.SearchMetricsInput{
 		Scope: request.Scope,
 		Text:  request.Text,
 		Limit: 5,
@@ -34,7 +35,7 @@ func (r *Runner) Analyze(ctx context.Context, actor domain.ActorContext, request
 		return domain.AnalysisResult{}, domain.NewError(domain.CodeMetricNotFound, "no matching metric was found")
 	}
 
-	descriptor, err := r.tools.DescribeMetric(ctx, actor, mcpclient.DescribeMetricInput{
+	descriptor, err := r.tools.DescribeMetric(ctx, actor, contract.DescribeMetricInput{
 		Scope:  request.Scope,
 		Metric: candidates[0].Name,
 	})

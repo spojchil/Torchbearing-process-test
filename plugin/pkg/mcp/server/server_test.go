@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	domain "github.com/spojchil/torchbearing/pkg/domain/analysis"
-	mcpclient "github.com/spojchil/torchbearing/pkg/mcp/client"
+	"github.com/spojchil/torchbearing/pkg/mcp/contract"
 )
 
 type recordingCatalog struct {
@@ -32,7 +32,7 @@ func TestServerRejectsDatasourceBeforeDomainPort(t *testing.T) {
 	server := New(catalog, noopGateway{})
 	actor := domain.ActorContext{Access: domain.AccessScope{AllowedDatasourceUIDs: []string{"allowed"}}}
 
-	_, err := server.SearchMetrics(context.Background(), actor, mcpclient.SearchMetricsInput{
+	_, err := server.SearchMetrics(context.Background(), actor, contract.SearchMetricsInput{
 		Scope: domain.AnalysisScope{DatasourceUID: "forbidden"},
 		Text:  "request rate",
 		Limit: 5,
@@ -50,7 +50,7 @@ func TestServerCallsDomainPortForAllowedDatasource(t *testing.T) {
 	server := New(catalog, noopGateway{})
 	actor := domain.ActorContext{Access: domain.AccessScope{AllowedDatasourceUIDs: []string{"allowed"}}}
 
-	_, err := server.SearchMetrics(context.Background(), actor, mcpclient.SearchMetricsInput{
+	_, err := server.SearchMetrics(context.Background(), actor, contract.SearchMetricsInput{
 		Scope: domain.AnalysisScope{DatasourceUID: "allowed"},
 		Text:  "request rate",
 		Limit: 5,

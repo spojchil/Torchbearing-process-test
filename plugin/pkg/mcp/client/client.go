@@ -6,27 +6,11 @@ import (
 	"context"
 
 	domain "github.com/spojchil/torchbearing/pkg/domain/analysis"
+	"github.com/spojchil/torchbearing/pkg/mcp/contract"
 )
-
-const (
-	ToolMetricsSearch        = "metrics.search"
-	ToolMetricsDescribe      = "metrics.describe"
-	ToolPrometheusQueryRange = "prometheus.query_range"
-)
-
-type SearchMetricsInput struct {
-	Scope domain.AnalysisScope
-	Text  string
-	Limit int
-}
-
-type DescribeMetricInput struct {
-	Scope  domain.AnalysisScope
-	Metric string
-}
 
 type Client interface {
-	SearchMetrics(ctx context.Context, actor domain.ActorContext, input SearchMetricsInput) ([]domain.MetricCandidate, error)
-	DescribeMetric(ctx context.Context, actor domain.ActorContext, input DescribeMetricInput) (domain.MetricDescriptor, error)
+	SearchMetrics(ctx context.Context, actor domain.ActorContext, input contract.SearchMetricsInput) ([]domain.MetricCandidate, error)
+	DescribeMetric(ctx context.Context, actor domain.ActorContext, input contract.DescribeMetricInput) (domain.MetricDescriptor, error)
 	QueryRange(ctx context.Context, actor domain.ActorContext, input domain.QueryRangeRequest) (domain.QueryResult, error)
 }

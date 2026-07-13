@@ -7,6 +7,7 @@ import (
 
 	domain "github.com/spojchil/torchbearing/pkg/domain/analysis"
 	mcpclient "github.com/spojchil/torchbearing/pkg/mcp/client"
+	"github.com/spojchil/torchbearing/pkg/mcp/contract"
 	mcpserver "github.com/spojchil/torchbearing/pkg/mcp/server"
 )
 
@@ -18,11 +19,11 @@ func New(server *mcpserver.Server) *Client {
 	return &Client{server: server}
 }
 
-func (c *Client) SearchMetrics(ctx context.Context, actor domain.ActorContext, input mcpclient.SearchMetricsInput) ([]domain.MetricCandidate, error) {
+func (c *Client) SearchMetrics(ctx context.Context, actor domain.ActorContext, input contract.SearchMetricsInput) ([]domain.MetricCandidate, error) {
 	return c.server.SearchMetrics(ctx, actor, input)
 }
 
-func (c *Client) DescribeMetric(ctx context.Context, actor domain.ActorContext, input mcpclient.DescribeMetricInput) (domain.MetricDescriptor, error) {
+func (c *Client) DescribeMetric(ctx context.Context, actor domain.ActorContext, input contract.DescribeMetricInput) (domain.MetricDescriptor, error) {
 	return c.server.DescribeMetric(ctx, actor, input)
 }
 

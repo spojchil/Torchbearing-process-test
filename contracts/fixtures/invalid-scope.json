@@ -1,0 +1,19 @@
+{
+  "scenario": "invalid-scope",
+  "request": {
+    "text": "分析 checkout 服务的请求速率",
+    "scope": {
+      "datasourceUid": "prometheus-mock",
+      "timeRange": {
+        "from": "2026-07-13T01:00:00Z",
+        "to": "2026-07-13T00:00:00Z"
+      }
+    }
+  },
+  "error": {
+    "code": "INVALID_SCOPE",
+    "message": "time range start must not be after end",
+    "retryable": false,
+    "requestId": "mock-analysis-005"
+  }
+}

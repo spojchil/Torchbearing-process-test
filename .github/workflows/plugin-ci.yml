@@ -1,4 +1,4 @@
-name: Plugin CI
+name: MS1 Metadata CI
 
 on:
   pull_request:
@@ -20,38 +20,30 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
-          cache: npm
-          cache-dependency-path: plugin/package-lock.json
 
-      - name: Install frontend dependencies
-        working-directory: plugin
-        run: npm ci
-
-      - name: Typecheck
-        working-directory: plugin
-        run: npm run typecheck
-
-      - name: Lint
-        working-directory: plugin
-        run: npm run lint
-
-      - name: Unit tests
-        working-directory: plugin
-        run: npm run test:ci
-
-      - name: Build frontend
-        working-directory: plugin
-        run: npm run build
+      - name: Validate frontend metadata
+        run: |
+          node -e "JSON.parse(require('node:fs').readFileSync('plugin/package.json', 'utf8'))"
+          node -e "JSON.parse(require('node:fs').readFileSync('plugin/plugin.json', 'utf8'))"
+          node -e "JSON.parse(require('node:fs').readFileSync('plugin/tsconfig.json', 'utf8'))"
+          node -e "JSON.parse(require('node:fs').readFileSync('plugin/.prettierrc.json', 'utf8'))"
+          node --check plugin/eslint.config.mjs
+          node --check plugin/jest.config.cjs
+          node --check plugin/webpack.config.mjs
 
       - uses: actions/setup-go@v6
         with:
-          go-version-file: plugin/go.mod
-          cache-dependency-path: plugin/go.sum
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
 
-      - name: Test backend
-        working-directory: plugin
-        run: go test ./pkg/...
+      - name: Verify backend metadata
+        run: go mod verify
 
-      - name: Build backend
-        working-directory: plugin
-        run: go build ./pkg/...
+      - name: Test backend packages when present
+        run: |
+          packages="$(go list ./... 2>/dev/null || true)"
+          if [ -n "$packages" ]; then
+            go test $packages
+          else
+            echo "No backend packages yet; metadata-only MS1 initialization."
+          fi

@@ -1,0 +1,16 @@
+{
+  "scenario": "agent-failure",
+  "request": {
+    "text": "分析 checkout 服务的请求速率",
+    "scope": {
+      "datasourceUid": "prometheus-mock",
+      "timeRange": { "from": "now-30m", "to": "now" }
+    }
+  },
+  "error": {
+    "code": "AGENT_UNAVAILABLE",
+    "message": "deterministic agent failure",
+    "retryable": true,
+    "requestId": "mock-analysis-003"
+  }
+}

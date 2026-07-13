@@ -1,0 +1,25 @@
+{
+  "scenario": "success",
+  "request": {
+    "text": "查看 checkout 服务过去 30 分钟的请求速率",
+    "scope": {
+      "datasourceUid": "prometheus-mock",
+      "timeRange": { "from": "now-30m", "to": "now" }
+    }
+  },
+  "response": {
+    "requestId": "mock-analysis-001",
+    "message": "已生成 checkout 服务请求速率图表。",
+    "charts": [
+      {
+        "id": "checkout-request-rate",
+        "title": "Checkout request rate",
+        "type": "timeseries",
+        "datasourceUid": "prometheus-mock",
+        "promql": "sum(rate(http_requests_total{service=\"checkout\"}[5m]))",
+        "timeRange": { "from": "now-30m", "to": "now" }
+      }
+    ],
+    "mock": true
+  }
+}

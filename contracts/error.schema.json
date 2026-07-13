@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://torchbearing.local/contracts/error.schema.json",
+  "title": "Torchbearing MS1 error response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["code", "message", "retryable", "requestId"],
+  "properties": {
+    "code": {
+      "enum": [
+        "INVALID_ARGUMENT",
+        "INVALID_SCOPE",
+        "AGENT_UNAVAILABLE",
+        "METRICS_UNAVAILABLE",
+        "NO_DATA",
+        "INTERNAL"
+      ]
+    },
+    "message": { "type": "string", "minLength": 1 },
+    "retryable": { "type": "boolean" },
+    "requestId": { "type": "string", "minLength": 1 }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "scenario": "empty",
+  "request": {
+    "text": "查看 unknown-service 过去 30 分钟的请求速率",
+    "scope": {
+      "datasourceUid": "prometheus-mock",
+      "timeRange": { "from": "now-30m", "to": "now" }
+    }
+  },
+  "response": {
+    "requestId": "mock-analysis-002",
+    "message": "指定范围内没有可展示的数据。",
+    "charts": [],
+    "mock": true
+  }
+}

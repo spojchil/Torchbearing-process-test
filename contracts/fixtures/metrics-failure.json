@@ -1,0 +1,16 @@
+{
+  "scenario": "metrics-failure",
+  "request": {
+    "text": "分析 checkout 服务的请求速率",
+    "scope": {
+      "datasourceUid": "prometheus-mock",
+      "timeRange": { "from": "now-30m", "to": "now" }
+    }
+  },
+  "error": {
+    "code": "METRICS_UNAVAILABLE",
+    "message": "deterministic metrics failure",
+    "retryable": true,
+    "requestId": "mock-analysis-004"
+  }
+}

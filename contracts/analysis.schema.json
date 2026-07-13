@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://torchbearing.local/contracts/analysis.schema.json",
+  "title": "Torchbearing MS1 deterministic contract fixture",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["scenario", "request"],
+  "properties": {
+    "scenario": {
+      "enum": [
+        "success",
+        "empty",
+        "agent-failure",
+        "metrics-failure",
+        "invalid-scope"
+      ]
+    },
+    "request": { "$ref": "#/$defs/AnalysisRequest" },
+    "response": { "$ref": "#/$defs/AnalysisResponse" },
+    "error": { "$ref": "error.schema.json" }
+  },
+  "oneOf": [
+    {
+      "required": ["response"],
+      "not": { "required": ["error"] }
+    },
+    {
+      "required": ["error"],
+      "not": { "required": ["response"] }
+    }
+  ],
+  "$defs": {
+    "TimeRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to"],
+      "properties": {
+        "from": { "type": "string", "minLength": 1 },
+        "to": { "type": "string", "minLength": 1 }
+      }
+    },
+    "AnalysisScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["datasourceUid", "timeRange"],
+      "properties": {
+        "datasourceUid": { "type": "string", "minLength": 1 },
+        "timeRange": { "$ref": "#/$defs/TimeRange" }
+      }
+    },
+    "AnalysisRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "scope"],
+      "properties": {
+        "text": { "type": "string", "minLength": 1 },
+        "scope": { "$ref": "#/$defs/AnalysisScope" }
+      }
+    },
+    "ChartSpec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "type",
+        "datasourceUid",
+        "promql",
+        "timeRange"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "type": { "enum": ["timeseries", "stat", "table"] },
+        "datasourceUid": { "type": "string", "minLength": 1 },
+        "promql": { "type": "string", "minLength": 1 },
+        "timeRange": { "$ref": "#/$defs/TimeRange" }
+      }
+    },
+    "AnalysisResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "message", "charts", "mock"],
+      "properties": {
+        "requestId": { "type": "string", "minLength": 1 },
+        "message": { "type": "string", "minLength": 1 },
+        "charts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/ChartSpec" }
+        },
+        "mock": { "const": true }
+      }
+    }
+  }
+}

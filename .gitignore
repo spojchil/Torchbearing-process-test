@@ -1,0 +1,42 @@
+# IDE and editor state
+.idea/
+*.swp
+*.swo
+*~
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Logs
+*.log
+logs/
+
+# Go build and test artifacts
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+__debug_bin*
+
+# Node.js and Grafana plugin artifacts
+node_modules/
+dist/
+coverage/
+.nyc_output/
+*.tsbuildinfo
+.eslintcache
+
+# Temporary files
+.cache/
+.tmp/

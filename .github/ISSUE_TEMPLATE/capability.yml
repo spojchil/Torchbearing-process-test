@@ -1,0 +1,41 @@
+name: Capability
+description: 记录一个跨 Milestone 的长期产品能力
+title: "Capability: "
+labels: ["capability"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Capability 用于维护长期产品能力地图，不直接表示一次可交付增量，也不默认进入当前 Milestone。具体产品决策仍通过平级 Proposal 提出。
+
+  - type: textarea
+    id: value
+    attributes:
+      label: 用户价值
+      description: 该能力服务哪些用户和长期问题？
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: 能力范围
+      description: 描述该能力包含什么，以及与相邻 Capability 的区别。
+    validations:
+      required: true
+
+  - type: textarea
+    id: related
+    attributes:
+      label: 相关 Proposal 与 Milestone
+      description: 列出已经决定、正在讨论或计划通过不同 Milestone 交付的相关 Proposal。
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: 确认
+      options:
+        - label: 本 Issue 是长期能力索引，不以 Capability 代替具体 Proposal。
+          required: true

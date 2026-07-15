@@ -1,0 +1,40 @@
+name: Documentation
+description: 创建需要进入仓库的用户或贡献者文档任务
+title: "Documentation: "
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        本模板只用于 README、用户使用说明、部署说明或贡献者文档。产品 Proposal 和架构设计应定稿在对应 Issue 中，不作为普通文档合入仓库。
+
+  - type: input
+    id: source
+    attributes:
+      label: 关联功能或 Issue
+      description: "存在上游依据时使用 #N 填写；首次治理或其他独立文档工作可以不填。"
+      placeholder: "#12"
+
+  - type: textarea
+    id: audience
+    attributes:
+      label: 目标读者与问题
+      description: 谁需要这份文档，当前缺少什么信息？
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: 文档范围
+      description: 需要新增或更新哪些内容？明确不包含什么？
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 验收标准
+      description: 如何验证读者能够按文档完成目标？
+    validations:
+      required: true

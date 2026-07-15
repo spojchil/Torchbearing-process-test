@@ -1,0 +1,66 @@
+name: Design
+description: 将已确认的产品目标落实为架构、接口和数据设计
+title: "Design: "
+labels: ["design"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Design 应承接已经确认的产品目标或工程决策。正文必须引用上游依据；GitHub 原生 Sub-issues 仅在需要工作分解或进度汇总时使用，不是必需关系。
+
+  - type: input
+    id: source
+    attributes:
+      label: 设计依据
+      description: "使用 #N 填写上游 Proposal、Roadmap、Spike 结论或其他决策 Issue；可以填写多个。"
+      placeholder: "#12"
+    validations:
+      required: true
+
+  - type: textarea
+    id: goals
+    attributes:
+      label: 目标与约束
+      description: 需要落实什么产品目标？有哪些边界、安全或兼容约束？
+    validations:
+      required: true
+
+  - type: textarea
+    id: modules
+    attributes:
+      label: 模块与协作流程
+      description: 哪些模块受到影响？职责、调用和数据流如何划分？
+    validations:
+      required: true
+
+  - type: textarea
+    id: contracts
+    attributes:
+      label: 接口与数据结构
+      description: 列出关键接口、领域对象、错误和兼容策略。
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 方案选择与取舍
+      description: 有哪些方案？选择哪个，为什么？
+    validations:
+      required: true
+
+  - type: textarea
+    id: risks
+    attributes:
+      label: 风险与待验证项
+      description: 哪些环节仍不确定，是否需要独立 Spike？
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 设计完成标准
+      description: 如何确认接口、数据和模块边界足以进入实现？
+    validations:
+      required: true

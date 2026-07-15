@@ -1,0 +1,131 @@
+name: Product Proposal
+description: 将已经完成 Draft PR 评审的产品方案沉淀为待决策 Issue
+title: "Proposal: "
+labels: ["proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        正式 Proposal Issue 在草案 Draft PR 内容稳定后创建。请复制最终定稿内容并链接草案 PR；创建 Issue 不表示 Proposal 已经接受，团队决策形成并记录后再设置决策标签。进入开发后正文视为只读基线。
+
+  - type: input
+    id: draft_pr
+    attributes:
+      label: 草案评审 PR
+      description: 填写已完成逐行评审且不会合并的 Draft PR。
+      placeholder: "#4"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Proposal 类型
+      options:
+        - 产品功能增量
+        - 产品战略基线
+    validations:
+      required: true
+
+  - type: dropdown
+    id: decision
+    attributes:
+      label: 团队决策
+      description: 创建时通常选择“待决策”；团队形成并记录结论后，再更新正文并添加对应决策标签。
+      options:
+        - 待决策
+        - Proposal-Accepted
+        - Proposal-Denied
+        - Proposal-NoPlan
+    validations:
+      required: true
+
+  - type: dropdown
+    id: specification
+    attributes:
+      label: 规格粒度
+      description: 根据影响范围选择规格粒度；被拒绝或暂不排期时可以改为“不适用”。
+      options:
+        - MiniSpec
+        - FullSpec
+        - 不适用（Proposal-Denied / Proposal-NoPlan）
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: 动机 / 用户故事
+      description: 哪些真实场景触发了需求？共同问题是什么？
+    validations:
+      required: true
+
+  - type: textarea
+    id: users
+    attributes:
+      label: 目标用户
+      description: 谁会直接使用或受益？
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: 现有做法及不足
+      description: 用户当前如何解决？还存在哪些负担、风险或缺口？无则填写“无”。
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: 本期范围与明确不做
+      description: 对每个主要功能点分别说明做什么和明确不做什么。
+      placeholder: |
+        功能点：
+        - 做：
+        - 明确不做：
+    validations:
+      required: true
+
+  - type: textarea
+    id: decisions
+    attributes:
+      label: 关键决策与依据
+      description: 列出备选方案、最终选择、选择理由和放弃其他方案的原因。
+    validations:
+      required: true
+
+  - type: textarea
+    id: concepts
+    attributes:
+      label: 基本概念与信息结构
+      description: 定义核心领域概念以及信息如何组织，作为后续 Design 的输入。
+    validations:
+      required: true
+
+  - type: textarea
+    id: prototype
+    attributes:
+      label: 原型 / Demo
+      description: 有界面时附原型、图片或演示链接；无界面时填写“不适用”。
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 验收标准
+      description: 使用可验证的真实例子说明何时算达成，并覆盖主要失败情况。
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: 定稿确认
+      options:
+        - label: 本 Issue 与草案 PR 的最终版本一致，不再继续修改旧决策。
+          required: true
+        - label: 后续产品变化将通过新的平级 Proposal 提出。
+          required: true

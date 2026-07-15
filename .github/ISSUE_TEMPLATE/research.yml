@@ -1,0 +1,57 @@
+name: Research
+description: 记录为产品决策提供输入的用户、问题、竞品或资料证据
+title: "Research: "
+labels: ["research"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Research 可以在 Proposal 之前创建。它提供证据和决策输入，不直接批准其中提到的产品功能。关闭前必须记录来源、结果、局限和对后续决策的影响。
+
+  - type: textarea
+    id: question
+    attributes:
+      label: 研究问题
+      description: 本次研究要回答什么问题，为什么会影响产品决策？
+    validations:
+      required: true
+
+  - type: textarea
+    id: sources
+    attributes:
+      label: 方法与来源
+      description: 列出访谈、观察、仓库、文档、竞品或其他来源，以及收集方法。
+    validations:
+      required: true
+
+  - type: textarea
+    id: findings
+    attributes:
+      label: 发现与证据
+      description: 记录能够复核的事实、样本或材料，不把推测写成事实。
+    validations:
+      required: true
+
+  - type: textarea
+    id: limitations
+    attributes:
+      label: 局限与未知
+      description: 说明样本、时间、环境和推断边界，以及仍然未知的内容。
+    validations:
+      required: true
+
+  - type: textarea
+    id: decision_input
+    attributes:
+      label: 对决策的输入
+      description: "这些发现支持、否定或需要进一步验证什么？使用 #N 关联已有 Issue 或草案 PR。"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: 关闭确认
+      options:
+        - label: 关闭本 Issue 前，将补全来源、证据、局限和决策输入。
+          required: true

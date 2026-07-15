@@ -1,0 +1,50 @@
+name: Task
+description: 定义一个范围清楚、可实现、可验证的工程任务
+title: "Task: "
+labels: ["task"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Task 是按需使用的工程跟踪对象，不是 Proposal 到 PR 的必经层。它只能落实已经确认的产品行为，不得引入新的用户功能或扩大 Proposal 边界；出现可独立决策的产品行为时，应改建平级 Proposal。正文必须引用实现依据；原生 Sub-issues 仅在需要工作分解或进度汇总时使用。
+
+  - type: input
+    id: source
+    attributes:
+      label: 实现依据
+      description: "使用 #N 填写上游 Proposal、Design、Spike 结论或相关 Task；可以填写多个。"
+      placeholder: "#12"
+    validations:
+      required: true
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: 背景与目标
+      description: 为什么要做？完成后得到什么可观察结果？
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: 改动范围与明确不做
+      description: 预计影响哪些模块或接口？哪些相邻问题不在本任务处理？
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 验收标准
+      description: 使用可以检查的结果说明何时完成。
+    validations:
+      required: true
+
+  - type: textarea
+    id: validation
+    attributes:
+      label: 验证计划
+      description: 在 CI 建立前后分别计划执行哪些构建、测试或人工验证？
+    validations:
+      required: true

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 贡献与协作流程
+    url: https://github.com/1024XEngineer/Torchbearing/blob/main/CONTRIBUTING.md
+    about: 创建 Issue 前，请先了解 Draft PR、Issue、Fork 和 Review 流程。
+  - name: 项目治理规则
+    url: https://github.com/1024XEngineer/Torchbearing/blob/main/GOVERNANCE.md
+    about: 查看 Proposal、Milestone、Sub-issues、标签和合并规则。

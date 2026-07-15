@@ -1,0 +1,73 @@
+name: Bug Report
+description: 报告一个可复现且不包含敏感信息的缺陷
+title: "Bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        简单、低风险 Bug 可以简要填写；严重、跨组件、难以复现或环境相关的 Bug 应补充完整信息。涉及凭据、越权或敏感数据时，请勿创建公开 Issue。
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: 影响组件
+      options:
+        - Grafana Plugin
+        - Server / Agent Core
+        - MCP Server
+        - 跨组件链路
+        - 构建 / 开发环境
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 问题与影响
+      description: 简要说明发生了什么，以及对用户或开发的影响。
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 复现方式或定位依据
+      description: 可以填写操作步骤、失败测试、错误位置或其他足以确认问题的依据。
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望行为
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际行为
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境信息
+      description: 环境相关或难以复现时，请提供操作系统、浏览器、Grafana、Go、Node.js 版本和相关 commit。
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 脱敏日志或截图
+      description: 不得包含 Token、密码、Cookie、内部地址、真实数据或其他敏感信息。
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: 安全确认
+      options:
+        - label: 此报告不包含凭据或未经脱敏的数据；安全漏洞已改用私密渠道报告。
+          required: true

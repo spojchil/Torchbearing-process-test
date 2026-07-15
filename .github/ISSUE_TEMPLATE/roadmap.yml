@@ -1,0 +1,57 @@
+name: Roadmap
+description: 维护长期能力、优先级和候选阶段的产品规划地图
+title: "Roadmap: "
+labels: ["roadmap"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Roadmap 是可以持续更新的规划或索引 Issue，不代替具体 Proposal，也不代表其中提到的功能已经接受。需要独立决策的产品功能仍应建立平级 Proposal。
+
+  - type: textarea
+    id: objective
+    attributes:
+      label: 规划目标与范围
+      description: 这份 Roadmap 服务什么产品目标，覆盖和不覆盖哪些范围？
+    validations:
+      required: true
+
+  - type: textarea
+    id: capabilities
+    attributes:
+      label: 能力与依赖地图
+      description: "列出 Capability、相互依赖及当前成熟度；使用 #N 关联已有 Issue。"
+    validations:
+      required: true
+
+  - type: textarea
+    id: priorities
+    attributes:
+      label: 优先级与依据
+      description: 说明排序依据、候选阶段和影响排序的证据或约束。
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposals
+    attributes:
+      label: 相关 Proposal
+      description: 分别列出待讨论、已接受、已拒绝或暂不排期的 Proposal，不把 Roadmap 条目当作批准结论。
+    validations:
+      required: true
+
+  - type: textarea
+    id: updates
+    attributes:
+      label: 更新和复审方式
+      description: 说明何时、由谁、依据什么变化更新本 Roadmap。
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: 确认
+      options:
+        - label: 本 Roadmap 只表达规划关系，不代替具体产品决策。
+          required: true

@@ -1,0 +1,65 @@
+name: Spike
+description: 通过有时限的实验消除一个关键技术不确定性
+title: "Spike: "
+labels: ["spike"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Spike 的交付物是证据和结论，不是未经评审直接进入产品的正式实现。它可以在 Proposal 之前或 Design 之前创建，正文必须引用其服务的研究、规划、草案或决策；原生 Sub-issues 为可选关系。关闭前请补充真实实验结果。
+
+  - type: input
+    id: source
+    attributes:
+      label: 上游问题
+      description: "使用 #N 填写 Research、Roadmap、草案 PR、Proposal、Design 或其他待决策问题。"
+      placeholder: "#12"
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: 要回答的问题
+      description: 用一句可判定的问题描述本 Spike 要消除的不确定性。
+    validations:
+      required: true
+
+  - type: input
+    id: timebox
+    attributes:
+      label: 负责人和时限
+      description: 指定负责人以及停止实验、汇总结论的时间或工作量上限。
+      placeholder: "负责人：@name；时限：2 个工作日"
+    validations:
+      required: true
+
+  - type: textarea
+    id: method
+    attributes:
+      label: 实验方法与边界
+      description: 如何验证？允许使用哪些 Mock、临时代码或环境？明确不做正式实现。
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 证据与判定标准
+      description: 需要收集哪些结果，什么条件支持或否定方案？
+    validations:
+      required: true
+
+  - type: textarea
+    id: output
+    attributes:
+      label: 结论归宿
+      description: 结论将更新到哪个 Proposal、Design 或后续 Task？
+    validations:
+      required: true
+
+  - type: textarea
+    id: results
+    attributes:
+      label: 实际结果（关闭前补充）
+      description: 关闭前记录真实环境、执行方法、结果、局限和最终结论；创建时可以填写“待实验后补充”。
